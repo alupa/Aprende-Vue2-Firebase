@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Vue & Firebase</title>
+</head>
+
+<body>
+    <div id="app">
+        <h1>Datos del usuario</h1>
+        <dl>
+            <dt><i>Username:</i></dt>
+            <dd>{{ datosPerfil.username }}</dd>
+            <dt><i>Ciudad:</i></dt>
+            <dd>{{ datosPerfil.ciudad }}</dd>
+            <dt><i>País:</i></dt>
+            <dd>{{ datosPerfil.pais }}</dd>
+            <dt><i>Likes:</i></dt>
+            <dd>{{ datosPerfil.likes }}</dd>
+            <button @click="actualizarLikes">Añadir like</button>
+        </dl>
+    </div>
+    <!-- development version, includes helpful console warnings -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.22/dist/vue.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.8.3/firebase.js"></script>
+    <script>
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyCngoegElKFmABFIhfB7ypmAfY1A5ksbTk",
+            authDomain: "curso-vue-firebase-7db9e.firebaseapp.com",
+            databaseURL: "https://curso-vue-firebase-7db9e.firebaseio.com",
+            projectId: "curso-vue-firebase-7db9e",
+            storageBucket: "curso-vue-firebase-7db9e.appspot.com",
+            messagingSenderId: "422223718450"
+        };
+        firebase.initializeApp(config)
+
+        var db = firebase.database()
+
+        //Vue stuff
+        new Vue({
+            el: '#app',
+            created() {
+                db.ref('perfiles').child('alupa')
+                .on('value', snapshot => this.datosPerfil = snapshot.val())
+            },
+            data: {
+                datosPerfil: {},
+            },
+            methods: {
+                actualizarLikes() {
+                    db.ref('perfiles').child('alupa').child('likes')
+                    // .update({
+                    //     'likes': this.datosPerfil.likes + 1
+                    // })
+                    .transaction(function (likesActuales) {
+                        return likesActuales + 1
+                    }, function (error, commited, snapshot) {
+                        if (error)
+                            console.error(error)
+                        else if (!commited)
+                            console.warn('Transaccion no realizada')
+                        else
+                            console.log('Transaccion realizada, ', 'valor: ' + snapshot.val())
+                    })
+                }
+            },
+        })
+
+    </script>
+</body>
+
+</html>

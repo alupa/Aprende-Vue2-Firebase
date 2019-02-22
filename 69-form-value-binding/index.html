@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Vue.js</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body>
+<div id="app">
+    <!-- Checkbox -->
+    <input type="checkbox" v-model="checkbox" :true-value="a" :false-value="b">
+    <!-- Radio -->
+    <!-- <input type="radio" v-model="radio" :value="a"> -->
+    <input type="radio" v-model="radio" :value="[1,2,3,4,5]">
+    <!-- Select -->
+    <select v-model="select">
+        <option :value="b"></option>
+    </select>
+    <hr>
+    <pre>{{ $data }}</pre>
+</div>
+    <!-- development version, includes helpful console warnings -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.22/dist/vue.js"></script>
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                checkbox: null,
+                radio: null,
+                select: null,
+                a: {estado: 'checked'},
+                b: {estado: 'unchecked'}
+            }
+        })
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Vue & Firebase</title>
+</head>
+
+<body>
+    <div id="app">
+    </div>
+    <!-- development version, includes helpful console warnings -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.22/dist/vue.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.8.3/firebase.js"></script>
+    <script>
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyCngoegElKFmABFIhfB7ypmAfY1A5ksbTk",
+            authDomain: "curso-vue-firebase-7db9e.firebaseapp.com",
+            databaseURL: "https://curso-vue-firebase-7db9e.firebaseio.com",
+            projectId: "curso-vue-firebase-7db9e",
+            storageBucket: "curso-vue-firebase-7db9e.appspot.com",
+            messagingSenderId: "422223718450"
+        };
+        firebase.initializeApp(config)
+        const db = firebase.database()
+        const gatosRef = db.ref('gatos')
+
+        //Vue stuff
+        new Vue({
+            el: '#app',
+            created() {
+                this.ordenarPorKeySecundaria('edad')
+            },
+            data: {
+                gatos: gatosRef,
+            },
+            methods: {
+                ordenarPorKeySecundaria(key) {
+                    this.gatos.orderByChild(key)
+                        //.limitToFirst(2)
+                        //.limitToLast(2)
+                        //.startAt(1)
+                        //.endAt(998)
+                        .equalTo(999)
+                        .on('child_added', snapshot => {
+                            console.log(snapshot.key, snapshot.val())
+                    })
+                },
+                ordenarPorKey() {
+                    this.gatos.orderByKey().on('child_added', snapshot => {
+                        console.log(snapshot.key, snapshot.val())
+                    })
+                },
+                ordenarPorValor() {
+                    db.ref('votos').orderByValue().on('child_added', snapshot => {
+                        console.log(snapshot.key, snapshot.val())
+                    })
+                }
+            },
+        })
+
+    </script>
+</body>
+
+</html>

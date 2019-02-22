@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Vue.js</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body>
+    <main>
+        <h1>{{ mensajeAlReves }}</h1>
+        <h2>{{ mensaje }}</h2>
+        <ul>
+            <li v-for="tarea in tareasPorAntiguedad">{{ tarea.titulo }}</li>
+        </ul>
+        <form v-on:submit.prevent="agregarTarea">
+            <input type="text" placeholder="Introduce tu tarea" v-model="nuevaTarea">
+            <input type="submit" value="Enviar tarea">
+        </form>
+
+        <pre>{{ $data }}</pre>
+    </main>
+    <!-- development version, includes helpful console warnings -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.22/dist/vue.js"></script>
+    <script src="js/main.js"></script>
+</body>
+
+</html>

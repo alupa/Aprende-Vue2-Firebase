@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Vue.js</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body>
+    <main>
+        <!-- Matriz -->
+        <!-- <ul>
+            <li v-for="dia in laborales">{{ dia }}</li>
+        </ul> -->
+
+        <!-- Matriz de objetos (collection) -->
+        <!-- <ul>
+            <li v-for="(tarea, index) in tareas">#{{ index + 1 }} - {{ tarea.nombre }} <small>({{ tarea.prioridad }})</small></li>
+        </ul> -->
+
+        <!-- Objeto -->
+        <ul>
+            <li v-for="(value, key, index) in persona">
+                {{ index }} - {{ key }}: {{ value }}
+            </li>
+        </ul>
+
+        <pre>{{ $data }}</pre>
+    </main>
+    <!-- development version, includes helpful console warnings -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.22/dist/vue.js"></script>
+    <script src="js/main.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Vue & Firebase</title>
+</head>
+
+<body>
+    <div id="app">
+        <form @submit.prevent="enviarMensaje">
+            <textarea v-model="mensaje" cols="30" rows="10"></textarea>
+            <br>
+            <input type="submit" value="Enviar mensaje">
+        </form>
+        <hr>
+        <h1>Mensajes</h1>
+        <ul>
+            <li v-for="mensaje in mensajes">
+                <span contenteditable="true" @blur="editarMensaje($event, mensaje.key)">{{ mensaje.mensaje }}</span>
+                <small><i>({{ mensaje.username }})</i></small>
+            </li>
+        </ul>
+    </div>
+    <!-- development version, includes helpful console warnings -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.22/dist/vue.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.8.3/firebase.js"></script>
+    <script>
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyCngoegElKFmABFIhfB7ypmAfY1A5ksbTk",
+            authDomain: "curso-vue-firebase-7db9e.firebaseapp.com",
+            databaseURL: "https://curso-vue-firebase-7db9e.firebaseio.com",
+            projectId: "curso-vue-firebase-7db9e",
+            storageBucket: "curso-vue-firebase-7db9e.appspot.com",
+            messagingSenderId: "422223718450"
+        };
+        firebase.initializeApp(config)
+
+        var db = firebase.database()
+
+        //Vue stuff
+        new Vue({
+            el: '#app',
+            created() {
+                db.ref('chats').on('value', snapshot => this.cargarMensajes(snapshot.val()))
+            },
+            data: {
+                mensaje: null,
+                username: 'alupa',
+                mensajes: [],
+            },
+            methods: {
+                cargarMensajes(mensajes) {
+                    this.mensajes = []
+                    for (let key in mensajes) {
+                        this.mensajes.push({
+                            mensaje: mensajes[key].mensaje,
+                            username: mensajes[key].username,
+                            key: key,
+                        })
+                    }
+                    this.mensajes.reverse()
+                },
+                enviarMensaje() {
+                    db.ref('chats').push({
+                        mensaje: this.mensaje,
+                        username: this.username
+                    }).then((data) => {
+                        this.mensaje = ''
+                        console.log(data.key)
+                    })
+                },
+                editarMensaje(mensaje, key) {
+                    //console.log(mensaje.target.innerHTML, key)
+                    db.ref('chats/' + key).update({
+                        mensaje: mensaje.target.innerHTML
+                    }).then(() => console.info('Mensaje actualizado'))
+                }
+            },
+        })
+
+    </script>
+</body>
+
+</html>

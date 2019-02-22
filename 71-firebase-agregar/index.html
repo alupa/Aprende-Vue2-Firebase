@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Firebase</title>
+</head>
+
+<body>
+    <form id='formulario'>
+        <textarea name="mensaje" id="mensaje" cols="30" rows="10"></textarea>
+        <br>
+        <input type="submit" value="Enviar mensaje">
+    </form>
+
+    <script src="https://www.gstatic.com/firebasejs/5.8.3/firebase.js"></script>
+    <script>
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyCngoegElKFmABFIhfB7ypmAfY1A5ksbTk",
+            authDomain: "curso-vue-firebase-7db9e.firebaseapp.com",
+            databaseURL: "https://curso-vue-firebase-7db9e.firebaseio.com",
+            projectId: "curso-vue-firebase-7db9e",
+            storageBucket: "curso-vue-firebase-7db9e.appspot.com",
+            messagingSenderId: "422223718450"
+        };
+        firebase.initializeApp(config)
+
+        var db = firebase.database()
+
+        // Guardar perfil de usuario
+        //   db.ref('/perfiles/alupa').set({
+        //       username: 'alupa',
+        //       password: '123',
+        //       ciudad: 'Iquique',
+        //       pais: 'Chile'
+        //   }).then(() => console.info('Datos añadidos'))
+
+        // Guardar nuevos datos anidados (lista)
+        document.getElementById('formulario').onsubmit = function(event) {
+            event.preventDefault()
+            let mensaje = document.getElementById('mensaje')
+            db.ref('chats').push({
+                username: 'alupa',
+                mensaje: mensaje.value,
+            }).then(() => {
+                console.info('Mensaje enviado')
+                mensaje.value = ''
+            })
+        }
+
+    </script>
+</body>
+
+</html>
